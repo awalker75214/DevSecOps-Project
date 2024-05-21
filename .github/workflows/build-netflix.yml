@@ -37,6 +37,19 @@ jobs:
              docker tag netflix akeemthedream/netflix:latest
              docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
              docker push akeemthedream/netflix:latest
+
+             
              env:
              DOCKER_CLI_ACI: 1
+
+             deploy:
+                needs: build
+                runs-on: [aws-netflix-githubactions]
+                steps:
+                  - name: Pull the docker image
+                    run: docker pull akeemthedream/netflix:latest
+                  - name: Trivy image scan
+                    run: trivy image akeemthedream/netflix:latest
+                  - name: Run the container netflix
+                    run: docker run -d --name netflix -p 8081:80 akeemthedream/netflix:latest
            
