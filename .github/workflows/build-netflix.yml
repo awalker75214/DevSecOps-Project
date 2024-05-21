@@ -43,7 +43,7 @@ jobs:
              DOCKER_CLI_ACI: 1
 
              deploy:
-                needs: build
+                needs: Build
                 runs-on: [aws-netflix-githubactions]
                 steps:
                   - name: Pull the docker image
